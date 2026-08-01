@@ -414,7 +414,8 @@ function criarCard(vaga){
    INICIALIZAÇÃO
 ============================================================ */
 
-document.addEventListener("DOMContentLoaded",async()=>{
+
+document.addEventListener("DOMContentLoaded", async () => {
 
     await carregarVagas();
 
@@ -422,13 +423,24 @@ document.addEventListener("DOMContentLoaded",async()=>{
 
     buscaEl.addEventListener("input", aplicarFiltros);
 
-    paisEl.addEventListener(
+    paisEl.addEventListener("change", () => {
 
-    "change",
+        preencherEstados();
 
-    aplicarFiltros
+        preencherCidades();
 
-);
+        aplicarFiltros();
+
+    });
+
+    estadoEl.addEventListener("change", () => {
+
+        preencherCidades();
+
+        aplicarFiltros();
+
+    });
+
 });
 
 /* ============================================================
@@ -442,6 +454,7 @@ function aplicarFiltros(){
         .toLowerCase();
 
     const paisSelecionado = paisEl.value;
+    const estadoSelecionado = estadoEl.value;
 
     let resultado = vagas.filter(v=>{
 
@@ -471,7 +484,20 @@ function aplicarFiltros(){
 
             v.paisCode===paisSelecionado;
 
-        return okBusca && okPais;
+        const okEstado =
+
+    estadoSelecionado === "all"
+
+    ||
+
+    v.estado === estadoSelecionado;
+    return okBusca
+    && okPais
+    && (
+        !estadoSelecionado ||
+        v.estado === estadoSelecionado
+    );
+        
 
     });
 
