@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insight Careers</title>
+  <style>
+    :root{
+      --bg:#07080c;
+      --card:#141826;
+      --stroke:rgba(255,255,255,.08);
+      --text:#f8f8fc;
+      --muted:#b5b8c7;
+      --accent:#7c5cff;
+      --accent-2:#4da3ff;
+      --accent-3:#c7a86b;
+      --danger:#ff6b81;
+      --shadow:0 20px 55px rgba(0,0,0,.38);
+    }
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Arial,sans-serif;
+    }
+    body{
+      min-height:100vh;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(77,163,255,.14), transparent 26%),
+        radial-gradient(circle at top right, rgba(124,92,255,.12), transparent 26%),
+        radial-gradient(circle at bottom center, rgba(199,168,107,.06), transparent 24%),
+        linear-gradient(180deg,#06070b 0%, #0b0e15 100%);
+    }
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:60;
+      backdrop-filter:blur(18px);
+      background:rgba(8,10,16,.78);
+      border-bottom:1px solid var(--stroke);
+    }
+    .topbar-inner{
+      max-width:1480px;
+      margin:0 auto;
+      padding:16px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .logo{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02)),
+        linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:0 14px 30px rgba(77,163,255,.18);
+    }
+    .brand-text h1{font-size:1.12rem;margin-bottom:2px}
+    .brand-text p{font-size:.88rem;color:var(--muted)}
+    .header-link,.footer-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:11px 15px;
+      border-radius:14px;
+      text-decoration:none;
+      color:#f8f8fc;
+      font-weight:700;
+      font-size:.9rem;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+    }
+    .container{
+      max-width:1480px;
+      margin:22px auto 42px;
+      padding:0 20px;
+    }
+    .stats-card,.filters,.results{
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+      border:1px solid var(--stroke);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+    }
+    .stats-card{
+      padding:18px;
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .mini{
+      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+      border:1px solid var(--stroke);
+      border-radius:16px;
+      padding:16px;
+    }
+    .mini span{
+      display:block;
+      color:var(--muted);
+      font-size:.82rem;
+      margin-bottom:7px;
+    }
+    .mini strong{
+      font-size:1.2rem;
+      font-weight:800;
+      color:#fff;
+    }
+    .filters,.results{padding:18px}
+    .filters{margin-bottom:18px}
+    .section-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
+    }
+    .section-title h3{font-size:1.02rem}
+    .section-title p{
+      color:var(--muted);
+      font-size:.88rem;
+      max-width:820px;
+      line-height:1.45;
+    }
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .tab-btn{
+      appearance:none;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      color:#f4f6fb;
+      padding:11px 15px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .tab-btn.active{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      border-color:transparent;
+      box-shadow:0 12px 25px rgba(77,163,255,.22);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:1.8fr 1fr 1fr 1fr 1fr;
+      gap:12px;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .field label{
+      font-size:.84rem;
+      color:#e8ebf6;
+    }
+    .input,.select{
+      width:100%;
+      border:none;
+      outline:none;
+      color:var(--text);
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--stroke);
+      border-radius:14px;
+      padding:12px 13px;
+      font-size:.92rem;
+    }
+    .chips-wrap{
+      margin-top:14px;
+      display:grid;
+      gap:12px;
+    }
+    .chips-group{
+      display:grid;
+      grid-template-columns:160px 1fr;
+      gap:12px;
+      align-items:start;
+    }
+    .chips-group label{
+      color:#e8ebf6;
+      font-size:.84rem;
+      padding-top:8px;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.03);
+      color:#eef1fb;
+      padding:9px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      font-size:.82rem;
+      user-select:none;
+    }
+    .chip.active{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      border-color:transparent;
+      box-shadow:0 10px 20px rgba(77,163,255,.18);
+    }
+    .actions{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      border-radius:14px;
+      padding:11px 14px;
+      font-weight:700;
+      font-size:.82rem;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      text-align:center;
+    }
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:0 16px 28px rgba(77,163,255,.22);
+    }
+    .btn-secondary{
+      color:#eef1fb;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+    }
+    .btn-danger{
+      color:#fff;
+      background:linear-gradient(135deg,#d84f66,var(--danger));
+    }
+    .saved-panel{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(77,163,255,.18);
+      background:rgba(77,163,255,.06);
+      color:#d9e9ff;
+      display:none;
+      font-size:.9rem;
+    }
+    .saved-panel.show{display:block}
+    .results-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .results-top h3{font-size:1rem}
+    .results-top p{font-size:.88rem;color:var(--muted)}
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+    .card{
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
+        linear-gradient(180deg, #131928, #101521);
+      border:1px solid var(--stroke);
+      border-radius:20px;
+      padding:16px;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      min-height:570px;
+    }
+    .favorite-toggle{
+      position:absolute;
+      top:12px;
+      right:12px;
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(14,18,28,.82);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      font-size:1.1rem;
+    }
+    .favorite-toggle.active{
+      background:linear-gradient(135deg,var(--accent-3),#b98b44);
+      border-color:transparent;
+    }
+    .favorite-badge{
+      display:inline-flex;
+      margin-bottom:10px;
+      font-size:.8rem;
+      background:rgba(199,168,107,.12);
+      color:#f3ddb4;
+      border:1px solid rgba(199,168,107,.22);
+      padding:6px 10px;
+      border-radius:999px;
+    }
+    .company{
+      color:var(--muted);
+      font-size:.88rem;
+      margin-bottom:6px;
+      padding-right:58px;
+    }
+    .title{
+      font-size:1.06rem;
+      font-weight:800;
+      line-height:1.35;
+      margin-bottom:10px;
+      color:#ffffff;
+    }
+    .salary{
+      color:#9cc9ff;
+      font-weight:800;
+      font-size:.98rem;
+      margin-bottom:10px;
+    }
+    .salary-badge,
+    .source-badge,
+    .link-badge{
+      display:inline-flex;
+      width:max-content;
+      margin-bottom:10px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.76rem;
+      font-weight:700;
+    }
+    .salary-real{
+      color:#dff8ea;
+      background:rgba(71,194,122,.14);
+      border:1px solid rgba(71,194,122,.24);
+    }
+    .salary-estimated{
+      color:#fff0d6;
+      background:rgba(240,179,90,.14);
+      border:1px solid rgba(240,179,90,.24);
+    }
+    .source-badge{
+      color:#dbe8ff;
+      background:rgba(77,163,255,.12);
+      border:1px solid rgba(77,163,255,.24);
+    }
+    .link-badge{
+      color:#f1f4fb;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:12px;
+    }
+    .tag{
+      padding:6px 9px;
+      font-size:.76rem;
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+      color:#eef1fb;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .desc{
+      color:#d6daea;
+      line-height:1.5;
+      font-size:.88rem;
+      min-height:56px;
+      margin-bottom:12px;
+      display:-webkit-box;
+      -webkit-line-clamp:5;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .meta{
+      display:grid;
+      gap:6px;
+      margin-bottom:12px;
+      color:var(--muted);
+      font-size:.84rem;
+    }
+    .card-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:auto;
+      padding-top:14px;
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+    .card .btn{height:48px}
+    .btn-link{flex:1;min-width:120px;background:#fff;color:#111826}
+    .btn-search{flex:1;min-width:135px}
+    .btn-copy{min-width:110px}
+    .empty{
+      padding:24px;
+      border:1px dashed var(--stroke);
+      border-radius:18px;
+      text-align:center;
+      color:var(--muted);
+      background:rgba(255,255,255,.02);
+    }
+    .pagination{
+      margin-top:20px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:center;
+    }
+    .page-btn{
+      min-width:42px;
+      height:42px;
+      border:none;
+      cursor:pointer;
+      border-radius:12px;
+      padding:0 12px;
+      font-weight:700;
+      font-size:.92rem;
+      color:#eef1fb;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--stroke);
+    }
+    .page-btn.active{
+      color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      border-color:transparent;
+    }
+    .toast{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      z-index:9999;
+      min-width:240px;
+      max-width:360px;
+      padding:14px 16px;
+      border-radius:16px;
+      color:#fff;
+      background:rgba(13,17,26,.94);
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow:0 18px 50px rgba(0,0,0,.36);
+      opacity:0;
+      transform:translateY(12px);
+      pointer-events:none;
+      transition:.28s ease;
+    }
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+    .flag{font-size:1rem;line-height:1}
+    footer{
+      text-align:center;
+      color:var(--muted);
+      padding:16px 20px 40px;
+      font-size:.92rem;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+    }
+    .skeleton{
+      position:relative;
+      overflow:hidden;
+      pointer-events:none;
+    }
+    .skeleton::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      transform:translateX(-100%);
+      background:linear-gradient(90deg,transparent,rgba(77,163,255,.10),rgba(124,92,255,.12),transparent);
+      animation:skeletonShimmer 1.35s infinite;
+    }
+    @keyframes skeletonShimmer{
+      100%{transform:translateX(100%)}
+    }
+    .skeleton-card{
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)),
+        linear-gradient(180deg, #131928, #101521);
+      border:1px solid var(--stroke);
+      border-radius:20px;
+      padding:16px;
+      min-height:570px;
+      position:relative;
+      overflow:hidden;
+    }
+    .skeleton-line{
+      height:12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      margin-bottom:10px;
+    }
+    .skeleton-line.sm{width:32%;height:10px}
+    .skeleton-line.md{width:58%}
+    .skeleton-line.lg{width:82%}
+    .skeleton-line.full{width:100%}
+    .skeleton-salary{width:42%;height:16px;border-radius:999px;background:rgba(77,163,255,.12);margin:8px 0 14px}
+    .results.loading #mensagemVazia,
+    .results.loading #paginacao{
+      display:none !important;
+    }
+    @media (max-width:1180px){
+      .cards{grid-template-columns:repeat(2,1fr)}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .stats-card{grid-template-columns:repeat(3,1fr)}
+      .chips-group{grid-template-columns:1fr}
+    }
+    @media (max-width:760px){
+      .cards{grid-template-columns:1fr}
+      .grid{grid-template-columns:1fr}
+      .stats-card{grid-template-columns:1fr 1fr}
+      .card,.skeleton-card{min-height:auto}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo">IC</div>
+        <div class="brand-text">
+          <h1>Insight Careers</h1>
+          <p>Plataforma premium de oportunidades e curadoria profissional</p>
+        </div>
+      </div>
+      <a class="header-link" href="https://www.linkedin.com/in/ingrid-cernauski-55a97b11b" target="_blank" rel="noopener noreferrer">
+        Contato LinkedIn
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="stats-card">
+      <div class="mini"><span>Total de vagas</span><strong id="totalVagas">0</strong></div>
+      <div class="mini"><span>Resultados filtrados</span><strong id="totalFiltradas">0</strong></div>
+      <div class="mini"><span>Países carregados</span><strong id="totalPaises">0</strong></div>
+      <div class="mini"><span>Vagas salvas</span><strong id="totalFavoritas">0</strong></div>
+      <div class="mini"><span>Status</span><strong id="status">Pronto</strong></div>
+    </section>
+
+    <section class="filters">
+      <div class="section-title">
+        <div>
+          <h3>Busca avançada</h3>
+          <p>Filtros por país, faixa salarial, modalidade e área, com link direto quando a fonte permitir.</p>
+        </div>
+        <div class="tabs">
+          <button class="tab-btn active" id="tabTodas" onclick="trocarAba('todas')">Todas as vagas</button>
+          <button class="tab-btn" id="tabSalvas" onclick="trocarAba('salvas')">Vagas salvas</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label for="busca">Buscar por cargo, empresa ou palavra-chave</label>
+          <input class="input" id="busca" type="text" placeholder="Ex: analista, sql, marketing, power bi, developer..." />
+        </div>
+
+        <div class="field">
+          <label for="pais">País</label>
+          <select class="select" id="pais">
+            <option value="all">Todos os países</option>
+            <option value="br">Brasil</option>
+            <option value="us">Estados Unidos</option>
+            <option value="ca">Canadá</option>
+            <option value="gb">Reino Unido</option>
+            <option value="de">Alemanha</option>
+            <option value="fr">França</option>
+            <option value="es">Espanha</option>
+            <option value="it">Itália</option>
+            <option value="nl">Holanda</option>
+            <option value="be">Bélgica</option>
+            <option value="ch">Suíça</option>
+            <option value="at">Áustria</option>
+            <option value="pl">Polônia</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="faixaSalario">Faixa salarial</label>
+          <select class="select" id="faixaSalario">
+            <option value="">Todas as faixas</option>
+            <option value="0-3000">Até R$ 3.000</option>
+            <option value="3001-5000">R$ 3.001 a R$ 5.000</option>
+            <option value="5001-8000">R$ 5.001 a R$ 8.000</option>
+            <option value="8001-12000">R$ 8.001 a R$ 12.000</option>
+            <option value="12001-9999999">Acima de R$ 12.000</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="estado">Estado / Região</label>
+          <select class="select" id="estado">
+            <option value="">Todos</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="cidade">Cidade</label>
+          <select class="select" id="cidade">
+            <option value="">Todas as cidades</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="chips-wrap">
+        <div class="chips-group">
+          <label>Modalidade</label>
+          <div class="chips" id="filtroModalidade">
+            <button type="button" class="chip" data-modalidade="Remoto">Remoto</button>
+            <button type="button" class="chip" data-modalidade="Presencial">Presencial</button>
+            <button type="button" class="chip" data-modalidade="Híbrido">Híbrido</button>
+          </div>
+        </div>
+
+        <div class="chips-group">
+          <label>Área</label>
+          <div class="chips" id="filtroArea">
+            <button type="button" class="chip" data-area="Analista">Analista</button>
+            <button type="button" class="chip" data-area="Mídia">Mídia</button>
+            <button type="button" class="chip" data-area="Marketing">Marketing</button>
+            <button type="button" class="chip" data-area="Dados / BI">Dados / BI</button>
+            <button type="button" class="chip" data-area="Tecnologia">Tecnologia</button>
+            <button type="button" class="chip" data-area="Financeiro">Financeiro</button>
+            <button type="button" class="chip" data-area="Produto">Produto</button>
+            <button type="button" class="chip" data-area="RH">RH</button>
+            <button type="button" class="chip" data-area="Projetos">Projetos</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" onclick="buscarVagas(true)">Buscar vagas</button>
+        <button class="btn btn-secondary" onclick="limparFiltros()">Limpar filtros</button>
+        <button id="btnExportarSalvas" class="btn btn-secondary" onclick="exportarFavoritasCSV()" style="display:none;">Exportar vagas salvas CSV</button>
+        <button id="btnLimparSalvas" class="btn btn-danger" onclick="limparVagasSalvas()" style="display:none;">Limpar vagas salvas</button>
+      </div>
+
+      <div class="saved-panel" id="painelSalvas">
+        Você está visualizando apenas as vagas marcadas como interesse.
+      </div>
+    </section>
+
+    <section class="results">
+      <div class="results-top">
+        <div>
+          <h3 id="contadorResultados">Carregando vagas...</h3>
+          <p id="subtituloResultados">Versão com link direto por fonte quando disponível.</p>
+        </div>
+      </div>
+
+      <div id="listaVagas" class="cards"></div>
+      <div id="paginacao" class="pagination"></div>
+      <div id="mensagemVazia" class="empty" style="display:none;">Nenhuma vaga encontrada com os filtros selecionados.</div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <footer>
+    <a class="footer-link" href="https://www.linkedin.com/in/ingrid-cernauski-55a97b11b" target="_blank" rel="noopener noreferrer">
+      LinkedIn Ingrid Cernauski
+    </a>
+    <div>Ingrid Cernauski _ Todos os direitos reservados 2026</div>
+  </footer>
+
+  <script>
+    let vagasFavoritas = JSON.parse(localStorage.getItem("favoritas")) || [];
+    let paginaAtual = 1;
+    const vagasPorPagina = 18;
+    let listaFiltradaAtual = [];
+    let vagas = [];
+    let abaAtual = "todas";
+
+    let modalidadesSelecionadas = [];
+    let areasSelecionadas = [];
+
+    const buscaEl = document.getElementById("busca");
+    const paisEl = document.getElementById("pais");
+    const estadoEl = document.getElementById("estado");
+    const cidadeEl = document.getElementById("cidade");
+    const faixaEl = document.getElementById("faixaSalario");
+    const toastEl = document.getElementById("toast");
+    const btnExportarSalvas = document.getElementById("btnExportarSalvas");
+    const btnLimparSalvas = document.getElementById("btnLimparSalvas");
+    const statusEl = document.getElementById("status");
+
+    const CACHE_TTL_MS = 1000 * 60 * 10;
+
+    function mostrarToast(texto){
+      toastEl.textContent = texto;
+      toastEl.classList.add("show");
+      clearTimeout(window.toastTimeout);
+      window.toastTimeout = setTimeout(() => toastEl.classList.remove("show"), 2500);
+    }
+
+    function setStatus(texto){ statusEl.textContent = texto; }
+    function salvarFavoritas(){ localStorage.setItem("favoritas", JSON.stringify(vagasFavoritas)); }
+    function atualizarTotalFavoritas(){ document.getElementById("totalFavoritas").textContent = vagasFavoritas.length; }
+
+    function atualizarAcoesSalvas(){
+      const mostrar = abaAtual === "salvas";
+      btnExportarSalvas.style.display = mostrar ? "inline-flex" : "none";
+      btnLimparSalvas.style.display = mostrar ? "inline-flex" : "none";
+    }
+
+    function normalizarTexto(valor, fallback = "Não informado"){
+      if (valor === null || valor === undefined || valor === "") return fallback;
+      return String(valor);
+    }
+
+    function escaparHtml(texto){
+      return String(texto)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function countryCodeParaNome(code){
+      const mapa = {
+        br:"Brasil", us:"Estados Unidos", ca:"Canadá", gb:"Reino Unido", de:"Alemanha",
+        fr:"França", es:"Espanha", it:"Itália", nl:"Holanda", be:"Bélgica", ch:"Suíça",
+        at:"Áustria", pl:"Polônia"
+      };
+      return mapa[code?.toLowerCase()] || code || "Internacional";
+    }
+
+    function countryCodeParaBandeira(code){
+      const mapa = {
+        br:"🇧🇷", us:"🇺🇸", ca:"🇨🇦", gb:"🇬🇧", de:"🇩🇪", fr:"🇫🇷", es:"🇪🇸",
+        it:"🇮🇹", nl:"🇳🇱", be:"🇧🇪", ch:"🇨🇭", at:"🇦🇹", pl:"🇵🇱"
+      };
+      return mapa[code?.toLowerCase()] || "🌍";
+    }
+
+    function countryCodeParaMoeda(code){
+      const mapa = {
+        br:"BRL", us:"USD", ca:"CAD", gb:"GBP", de:"EUR", fr:"EUR", es:"EUR", it:"EUR",
+        nl:"EUR", be:"EUR", at:"EUR", pl:"PLN", ch:"CHF"
+      };
+      return mapa[code?.toLowerCase()] || "USD";
+    }
+
+    function formatarMoeda(valor){
+      if (!valor || Number.isNaN(Number(valor))) return "Salário a combinar";
+      return Number(valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function formatarMoedaPorCodigo(valor, currencyCode){
+      if (!valor || Number.isNaN(Number(valor))) return "Salário a combinar";
+      const localeMap = {
+        BRL:"pt-BR", USD:"en-US", CAD:"en-CA", GBP:"en-GB", EUR:"de-DE", PLN:"pl-PL", CHF:"de-CH"
+      };
+      return Number(valor).toLocaleString(localeMap[currencyCode] || "en-US", {
+        style:"currency",
+        currency:currencyCode
+      });
+    }
+
+    function converterParaBRL(valor, currencyCode){
+      const fx = { BRL:1, USD:5.00, CAD:3.70, GBP:6.40, EUR:5.45, PLN:1.27, CHF:5.70 };
+      if (!valor || Number.isNaN(Number(valor))) return null;
+      return Number(valor) * (fx[currencyCode] || 1);
+    }
+
+    function valorBaseSalario(vaga){
+      if (vaga.salario && vaga.salario > 0) return vaga.salario;
+      if (vaga.salaryEstimated && vaga.salaryEstimated > 0) return vaga.salaryEstimated;
+      return 0;
+    }
+
+    function formatarSalarioCompleto(vaga){
+      const base = valorBaseSalario(vaga);
+      if (!base) return "Salário a combinar";
+
+      if (vaga.salaryType === "estimado") {
+        return `Estimado: ${formatarMoeda(base)}`;
+      }
+
+      const local = formatarMoedaPorCodigo(base, vaga.currency || "USD");
+      const brl = converterParaBRL(base, vaga.currency || "USD");
+      if (!brl || vaga.currency === "BRL") return local;
+      return `${local} • ${formatarMoeda(brl)}`;
+    }
+
+    function termoPadraoPorPais(pais){
+      return pais === "br" ? "analista" : "developer";
+    }
+
+    function mapearModalidade(titulo = "", descricao = "", cidade = ""){
+      const texto = `${titulo} ${descricao} ${cidade}`.toLowerCase();
+      if (texto.includes("híbrido") || texto.includes("hybrid")) return "Híbrido";
+      if (texto.includes("remoto") || texto.includes("remote")) return "Remoto";
+      if (texto.includes("home office")) return "Remoto";
+      return "Presencial";
+    }
+
+    function mapearArea(titulo = "", descricao = ""){
+      const texto = `${titulo} ${descricao}`.toLowerCase();
+      if (texto.includes("analista")) return "Analista";
+      if (texto.includes("mídia") || texto.includes("midia")) return "Mídia";
+      if (texto.includes("marketing") || texto.includes("growth") || texto.includes("crm")) return "Marketing";
+      if (texto.includes("dados") || texto.includes("data") || texto.includes("bi") || texto.includes("power bi") || texto.includes("sql")) return "Dados / BI";
+      if (texto.includes("desenvolvedor") || texto.includes("developer") || texto.includes("frontend") || texto.includes("backend") || texto.includes("full stack") || texto.includes("engenheiro de software")) return "Tecnologia";
+      if (texto.includes("financeiro") || texto.includes("finanças") || texto.includes("contábil") || texto.includes("controladoria")) return "Financeiro";
+      if (texto.includes("produto") || texto.includes("product")) return "Produto";
+      if (texto.includes("rh") || texto.includes("recrutamento") || texto.includes("people")) return "RH";
+      if (texto.includes("projeto") || texto.includes("project") || texto.includes("pm") || texto.includes("gerente de projetos")) return "Projetos";
+      return "Analista";
+    }
+
+    function getCacheKey(termo, pais, page){
+      return `jobs_cache::${pais || "all"}::${termo || "default"}::${page}`;
+    }
+
+    function getCachedJobs(key){
+      try{
+        const raw = localStorage.getItem(key);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed?.timestamp || !Array.isArray(parsed?.results)) return null;
+        if (Date.now() - parsed.timestamp > CACHE_TTL_MS) return null;
+        return parsed.results;
+      } catch {
+        return null;
+      }
+    }
+
+    function setCachedJobs(key, results){
+      try{
+        localStorage.setItem(key, JSON.stringify({ timestamp: Date.now(), results }));
+      } catch {}
+    }
+
+    async function carregarVagas(){
+
+      const response = await fetch("br_jobs.json");
+
+      if(!response.ok){
+        throw new Error("Erro ao carregar br_jobs.json");
+      }
+
+      const dados = await response.json();
+
+      return dados.map(vaga => {
+
+        const partes = (vaga.location || "").split(",");
+
+        const cidade = (partes[0]||"").trim();
+        const estado = (partes[1]||"").trim();
+
+        const salario = Math.round(((vaga.salary_min||0)+(vaga.salary_max||0))/2);
+
+        return {
+          id:vaga.id,
+          titulo:vaga.title,
+          empresa:vaga.company,
+          cidade,
+          estado,
+          pais:"Brasil",
+          paisCode:"br",
+          flag:"🇧🇷",
+          currency:"BRL",
+          salario,
+          salaryType:"real",
+          salaryEstimated:salario,
+          descricao:vaga.description,
+          link:vaga.url,
+          sourceName:"Portfolio",
+          modalidade:"Remoto",
+          area:"Dados / BI"
+        };
+      });
+    }
+
+    function renderizarSkeleton(qtd = 6){
+      const listaEl = document.getElementById("listaVagas");
+      const resultsEl = document.querySelector(".results");
+      resultsEl.classList.add("loading");
+      listaEl.innerHTML = "";
+      document.getElementById("mensagemVazia").style.display = "none";
+      document.getElementById("paginacao").innerHTML = "";
+
+      for(let i = 0; i < qtd; i++){
+        const card = document.createElement("article");
+        card.className = "skeleton-card skeleton";
+        card.innerHTML = `
+          <div class="skeleton-line sm"></div>
+          <div class="skeleton-line lg"></div>
+          <div class="skeleton-line md"></div>
+          <div class="skeleton-salary"></div>
+          <div class="skeleton-line full"></div>
+          <div class="skeleton-line lg"></div>
+          <div class="skeleton-line full"></div>
+        `;
+        listaEl.appendChild(card);
+      }
+    }
+
+    function esconderSkeleton(){
+      document.querySelector(".results").classList.remove("loading");
+    }
+
+    function mostrarErroNaLista(texto){
+      document.getElementById("listaVagas").innerHTML = "";
+      document.getElementById("paginacao").innerHTML = "";
+      document.getElementById("contadorResultados").textContent = "Falha ao carregar vagas";
+      document.getElementById("subtituloResultados").textContent = "Verifique a API.";
+      const vazioEl = document.getElementById("mensagemVazia");
+      vazioEl.style.display = "block";
+      vazioEl.textContent = texto;
+    }
+
+    function preencherEstados(){
+      const paisSelecionado = paisEl.value;
+      let estados = vagas
+        .filter(v => !paisSelecionado || paisSelecionado === "all" || v.paisCode === paisSelecionado)
+        .map(v => v.estado)
+        .filter(Boolean);
+
+      estados = [...new Set(estados)].sort((a,b) => a.localeCompare(b, "pt-BR"));
+      const atual = estadoEl.value;
+      estadoEl.innerHTML = `<option value="">Todos</option>` + estados.map(e => `<option value="${escaparHtml(e)}">${escaparHtml(e)}</option>`).join("");
+      if (estados.includes(atual)) estadoEl.value = atual;
+    }
+
+    function preencherCidades(){
+      const paisSelecionado = paisEl.value;
+      const estadoSelecionado = estadoEl.value;
+
+      let cidades = vagas
+        .filter(v => (!paisSelecionado || paisSelecionado === "all" || v.paisCode === paisSelecionado) && (!estadoSelecionado || v.estado === estadoSelecionado))
+        .map(v => v.cidade)
+        .filter(Boolean);
+
+      cidades = [...new Set(cidades)].sort((a,b) => a.localeCompare(b, "pt-BR"));
+      const atual = cidadeEl.value;
+      cidadeEl.innerHTML = `<option value="">Todas as cidades</option>` + cidades.map(c => `<option value="${escaparHtml(c)}">${escaparHtml(c)}</option>`).join("");
+      if (cidades.includes(atual)) cidadeEl.value = atual;
+    }
+
+    function atualizarContadores(){
+      document.getElementById("totalVagas").textContent = vagas.length;
+      document.getElementById("totalPaises").textContent = [...new Set(vagas.map(v => v.paisCode))].length;
+      document.getElementById("totalFavoritas").textContent = vagasFavoritas.length;
+    }
+
+    function criarTag(texto, flag = ""){
+      const span = document.createElement("span");
+      span.className = "tag";
+      if (flag) {
+        const flagEl = document.createElement("span");
+        flagEl.className = "flag";
+        flagEl.textContent = flag;
+        span.appendChild(flagEl);
+      }
+      span.appendChild(document.createTextNode(texto));
+      return span;
+    }
+
+    function ordenarLista(lista){
+      return lista.sort((a, b) => valorBaseSalario(b) - valorBaseSalario(a));
+    }
+
+    function dentroDaFaixa(salario, faixa){
+      if (!faixa) return true;
+      const [min,max] = faixa.split("-").map(Number);
+      return salario >= min && salario <= max;
+    }
+
+    function toggleSelecaoArray(arrayRef, valor){
+      const indice = arrayRef.indexOf(valor);
+      if (indice >= 0) arrayRef.splice(indice, 1);
+      else arrayRef.push(valor);
+    }
+
+    function setMultiSelectChip(groupId, attr, arrayRef){
+      const chips = document.querySelectorAll(`#${groupId} .chip`);
+      chips.forEach(chip => {
+        chip.addEventListener("click", () => {
+          const valor = chip.getAttribute(attr) || "";
+          toggleSelecaoArray(arrayRef, valor);
+          chip.classList.toggle("active");
+          filtrarVagas();
+        });
+      });
+    }
+
+    setMultiSelectChip("filtroModalidade", "data-modalidade", modalidadesSelecionadas);
+    setMultiSelectChip("filtroArea", "data-area", areasSelecionadas);
+
+    function toggleFavorita(id){
+      const vaga = vagas.find(v => v.id === id);
+      if (vagasFavoritas.includes(id)) {
+        vagasFavoritas = vagasFavoritas.filter(v => v !== id);
+        mostrarToast(`Removida de salvas: ${vaga?.titulo || "vaga"}`);
+      } else {
+        vagasFavoritas.push(id);
+        mostrarToast(`Salva com sucesso: ${vaga?.titulo || "vaga"}`);
+      }
+      salvarFavoritas();
+      atualizarContadores();
+      filtrarVagas();
+    }
+
+    async function copiarLink(url){
+      try{
+        await navigator.clipboard.writeText(url);
+        mostrarToast("Link da vaga copiado");
+      } catch {
+        mostrarToast("Não foi possível copiar o link");
+      }
+    }
+
+    function renderizarPaginacao(totalItens){
+      const paginacaoEl = document.getElementById("paginacao");
+      const totalPaginas = Math.ceil(totalItens / vagasPorPagina);
+      paginacaoEl.innerHTML = "";
+      if (totalPaginas <= 1) return;
+
+      function criarBotaoPagina(texto, pagina, ativo = false, desabilitado = false){
+        const btn = document.createElement("button");
+        btn.className = `page-btn ${ativo ? "active" : ""}`;
+        btn.textContent = texto;
+        btn.disabled = desabilitado;
+        if (!desabilitado) btn.onclick = () => mudarPagina(pagina);
+        return btn;
+      }
+
+      paginacaoEl.appendChild(criarBotaoPagina("‹", paginaAtual - 1, false, paginaAtual === 1));
+
+      let inicio = Math.max(1, paginaAtual - 2);
+      let fim = Math.min(totalPaginas, paginaAtual + 2);
+      if (paginaAtual <= 3) fim = Math.min(totalPaginas, 5);
+      if (paginaAtual >= totalPaginas - 2) inicio = Math.max(1, totalPaginas - 4);
+
+      for (let i = inicio; i <= fim; i++) {
+        paginacaoEl.appendChild(criarBotaoPagina(i, i, i === paginaAtual));
+      }
+
+      paginacaoEl.appendChild(criarBotaoPagina("›", paginaAtual + 1, false, paginaAtual === totalPaginas));
+    }
+
+    function montarLinkFinal(vaga){
+      const linkOriginal = typeof vaga.link === "string" ? vaga.link.trim() : "";
+      const linkValido = /^https?:\/\//i.test(linkOriginal) && !linkOriginal.includes("example.com");
+      const fonte = (vaga.sourceName || "").toLowerCase();
+
+      if (fonte === "brasil json" && linkValido) return linkOriginal;
+      if (fonte === "usajobs" && linkValido) return linkOriginal;
+      if (fonte === "remotive" && linkValido) return linkOriginal;
+
+      const termoBusca = `${vaga.titulo} ${vaga.empresa} ${vaga.pais}`.trim();
+      return `https://www.google.com/search?q=${encodeURIComponent(termoBusca)}`;
+    }
+
+    function renderizarVagas(lista){
+      atualizarContadores();
+      document.getElementById("totalFiltradas").textContent = lista.length;
+
+      const listaEl = document.getElementById("listaVagas");
+      const vazioEl = document.getElementById("mensagemVazia");
+      const contadorEl = document.getElementById("contadorResultados");
+      const subtituloEl = document.getElementById("subtituloResultados");
+
+      contadorEl.textContent = `${lista.length} vaga${lista.length !== 1 ? "s" : ""} encontrada${lista.length !== 1 ? "s" : ""}`;
+      subtituloEl.textContent =
+        abaAtual === "salvas"
+          ? "Estas são as vagas que você marcou como interesse."
+          : "Filtrando por país, modalidade, área e faixa salarial.";
+
+      listaEl.innerHTML = "";
+
+      if (!lista.length){
+        vazioEl.style.display = "block";
+        vazioEl.textContent = abaAtual === "salvas"
+          ? "Você ainda não salvou nenhuma vaga de interesse."
+          : "Nenhuma vaga encontrada com os filtros selecionados.";
+        document.getElementById("paginacao").innerHTML = "";
+        return;
+      }
+
+      vazioEl.style.display = "none";
+
+      const inicio = (paginaAtual - 1) * vagasPorPagina;
+      const fim = inicio + vagasPorPagina;
+      const vagasPagina = lista.slice(inicio, fim);
+
+      vagasPagina.forEach(vaga => {
+        const favorita = vagasFavoritas.includes(vaga.id);
+        const card = document.createElement("article");
+        card.className = "card";
+
+        const favBtn = document.createElement("button");
+        favBtn.className = `favorite-toggle ${favorita ? "active" : ""}`;
+        favBtn.title = favorita ? "Remover dos salvos" : "Salvar vaga";
+        favBtn.textContent = favorita ? "♥" : "♡";
+        favBtn.addEventListener("click", () => toggleFavorita(vaga.id));
+        card.appendChild(favBtn);
+
+        if (favorita){
+          const badge = document.createElement("div");
+          badge.className = "favorite-badge";
+          badge.textContent = "⭐ Interesse";
+          card.appendChild(badge);
+        }
+
+        const company = document.createElement("div");
+        company.className = "company";
+        company.textContent = vaga.empresa;
+        card.appendChild(company);
+
+        const title = document.createElement("div");
+        title.className = "title";
+        title.textContent = vaga.titulo;
+        card.appendChild(title);
+
+        const salary = document.createElement("div");
+        salary.className = "salary";
+        salary.textContent = formatarSalarioCompleto(vaga);
+        card.appendChild(salary);
+
+        const salaryBadge = document.createElement("div");
+        salaryBadge.className = `salary-badge ${vaga.salaryType === "estimado" ? "salary-estimated" : "salary-real"}`;
+        salaryBadge.textContent = vaga.salaryType === "estimado" ? "💡 Faixa estimada" : "💰 Salário informado";
+        card.appendChild(salaryBadge);
+
+        const sourceBadge = document.createElement("div");
+        sourceBadge.className = "source-badge";
+        sourceBadge.textContent = `Fonte: ${vaga.sourceName || vaga.paisCode.toUpperCase()}`;
+        card.appendChild(sourceBadge);
+
+        const destinoFinal = montarLinkFinal(vaga);
+        const ehGoogleFallback = destinoFinal.includes("google.com/search?q=");
+
+        const linkBadge = document.createElement("div");
+        linkBadge.className = "link-badge";
+        linkBadge.textContent = ehGoogleFallback ? "Destino: Busca web" : "Destino: Link direto";
+        card.appendChild(linkBadge);
+
+        const tags = document.createElement("div");
+        tags.className = "tags";
+        tags.appendChild(criarTag(vaga.pais, vaga.flag));
+        tags.appendChild(criarTag(vaga.cidade));
+        tags.appendChild(criarTag(vaga.estado));
+        tags.appendChild(criarTag(vaga.modalidade));
+        tags.appendChild(criarTag(vaga.area));
+        card.appendChild(tags);
+
+        const desc = document.createElement("div");
+        desc.className = "desc";
+        desc.textContent = vaga.descricao;
+        card.appendChild(desc);
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.innerHTML = `
+          <div><strong>País:</strong> ${escaparHtml(vaga.pais)}</div>
+          <div><strong>Estado / Região:</strong> ${escaparHtml(vaga.estado)}</div>
+          <div><strong>Cidade:</strong> ${escaparHtml(vaga.cidade)}</div>
+          <div><strong>Modalidade:</strong> ${escaparHtml(vaga.modalidade)}</div>
+          <div><strong>Área:</strong> ${escaparHtml(vaga.area)}</div>
+          <div><strong>Origem:</strong> ${escaparHtml(vaga.sourceName || vaga.paisCode.toUpperCase())}</div>
+        `;
+        card.appendChild(meta);
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        const linkBusca = `https://www.google.com/search?q=${encodeURIComponent(vaga.titulo + " " + vaga.empresa + " " + vaga.pais)}`;
+
+        const a1 = document.createElement("a");
+        a1.className = "btn btn-link";
+        a1.href = destinoFinal;
+        a1.target = "_blank";
+        a1.rel = "noopener noreferrer";
+        a1.textContent = ehGoogleFallback ? "Buscar vaga" : "Ver vaga";
+
+        const a2 = document.createElement("a");
+        a2.className = "btn btn-secondary btn-search";
+        a2.href = linkBusca;
+        a2.target = "_blank";
+        a2.rel = "noopener noreferrer";
+        a2.textContent = "Buscar em portais";
+
+        const b3 = document.createElement("button");
+        b3.className = "btn btn-secondary btn-copy";
+        b3.textContent = "Copiar link";
+        b3.addEventListener("click", () => copiarLink(destinoFinal));
+
+        actions.appendChild(a1);
+        actions.appendChild(a2);
+        actions.appendChild(b3);
+        card.appendChild(actions);
+
+        listaEl.appendChild(card);
+      });
+
+      renderizarPaginacao(lista.length);
+    }
+
+    function filtrarVagas(){
+      const busca = buscaEl.value.toLowerCase().trim();
+      const pais = paisEl.value;
+      const estado = estadoEl.value;
+      const cidade = cidadeEl.value;
+      const faixa = faixaEl.value;
+
+      let lista = vagas.filter(vaga => {
+        const texto = `${vaga.titulo} ${vaga.empresa} ${vaga.cidade} ${vaga.estado} ${vaga.pais} ${vaga.area} ${vaga.modalidade}`.toLowerCase();
+        const okBusca = !busca || texto.includes(busca);
+        const okPais = !pais || pais === "all" || vaga.paisCode === pais;
+        const okEstado = !estado || vaga.estado === estado;
+        const okCidade = !cidade || vaga.cidade === cidade;
+        const okModalidade = !modalidadesSelecionadas.length || modalidadesSelecionadas.includes(vaga.modalidade);
+        const okArea = !areasSelecionadas.length || areasSelecionadas.includes(vaga.area);
+        const valorBRL = vaga.salaryType === "estimado"
+          ? vaga.salaryEstimated
+          : (vaga.currency === "BRL" ? vaga.salario : converterParaBRL(vaga.salario, vaga.currency || "USD"));
+        const okFaixa = dentroDaFaixa(valorBRL || 0, faixa);
+
+        return okBusca && okPais && okEstado && okCidade && okModalidade && okArea && okFaixa;
+      });
+
+      if (abaAtual === "salvas"){
+        lista = lista.filter(vaga => vagasFavoritas.includes(vaga.id));
+      }
+
+      lista = ordenarLista(lista);
+      listaFiltradaAtual = lista;
+      paginaAtual = 1;
+      preencherEstados();
+      preencherCidades();
+      renderizarVagas(lista);
+    }
+
+    async function buscarVagas(forcarAtualizacao = false){
+      try{
+        setStatus("Carregando");
+        renderizarSkeleton(6);
+
+        const pais = paisEl.value || "all";
+        let busca = buscaEl.value.trim();
+        if (!busca) busca = termoPadraoPorPais(pais);
+
+        vagas = await carregarVagas();
+        filtrarVagas();
+        setStatus("OK");
+        mostrarToast(`Busca concluída: ${vagas.length} vagas`);
+      } catch (e) {
+        console.error(e);
+        vagas = [];
+        setStatus("Erro");
+        mostrarErroNaLista(e.message || "Erro ao carregar vagas.");
+      } finally {
+        esconderSkeleton();
+      }
+    }
+
+    function limparFiltros(){
+      buscaEl.value = "";
+      paisEl.value = "all";
+      estadoEl.value = "";
+      cidadeEl.value = "";
+      faixaEl.value = "";
+      modalidadesSelecionadas = [];
+      areasSelecionadas = [];
+      document.querySelectorAll(".chip").forEach(chip => chip.classList.remove("active"));
+      paginaAtual = 1;
+      buscarVagas(true);
+    }
+
+    function trocarAba(aba){
+      abaAtual = aba;
+      paginaAtual = 1;
+      document.getElementById("tabTodas").classList.toggle("active", aba === "todas");
+      document.getElementById("tabSalvas").classList.toggle("active", aba === "salvas");
+      document.getElementById("painelSalvas").classList.toggle("show", aba === "salvas");
+      atualizarAcoesSalvas();
+      filtrarVagas();
+    }
+
+    function limparVagasSalvas(){
+      if (!vagasFavoritas.length){
+        mostrarToast("Não há vagas salvas para limpar");
+        return;
+      }
+      vagasFavoritas = [];
+      salvarFavoritas();
+      atualizarContadores();
+      filtrarVagas();
+    }
+
+    function exportarFavoritasCSV(){
+      const favoritas = vagas.filter(vaga => vagasFavoritas.includes(vaga.id));
+      if (!favoritas.length){
+        mostrarToast("Nenhuma vaga salva para exportar");
+        return;
+      }
+
+      const cabecalho = ["Título","Empresa","País","Cidade","Modalidade","Área","Salário","Tipo","Fonte","Link"];
+      const linhas = favoritas.map(vaga => [
+        vaga.titulo,
+        vaga.empresa,
+        vaga.pais,
+        vaga.cidade,
+        vaga.modalidade,
+        vaga.area,
+        formatarSalarioCompleto(vaga),
+        vaga.salaryType || "",
+        vaga.sourceName || "",
+        montarLinkFinal(vaga)
+      ]);
+
+      const conteudo = [cabecalho, ...linhas]
+        .map(linha => linha.map(valor => `"${String(valor).replace(/"/g, '""')}"`).join(";"))
+        .join("\n");
+
+      const blob = new Blob(["\uFEFF" + conteudo], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "vagas-salvas.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      mostrarToast("CSV exportado com sucesso");
+    }
+
+    function mudarPagina(pagina){
+      const totalPaginas = Math.ceil(listaFiltradaAtual.length / vagasPorPagina);
+      if (pagina < 1 || pagina > totalPaginas) return;
+      paginaAtual = pagina;
+      renderizarVagas(listaFiltradaAtual);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    paisEl.addEventListener("change", () => buscarVagas(true));
+    estadoEl.addEventListener("change", filtrarVagas);
+    cidadeEl.addEventListener("change", filtrarVagas);
+    faixaEl.addEventListener("change", filtrarVagas);
+
+    buscaEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        buscarVagas(true);
+      }
+    });
+
+    atualizarTotalFavoritas();
+    atualizarAcoesSalvas();
+    buscarVagas(false);
+  </script>
+</body>
+</html>
