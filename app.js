@@ -455,6 +455,7 @@ function aplicarFiltros(){
 
     const paisSelecionado = paisEl.value;
     const estadoSelecionado = estadoEl.value;
+    const faixaSelecionada = faixaEl.value;
 
     let resultado = vagas.filter(v=>{
 
@@ -484,20 +485,37 @@ function aplicarFiltros(){
 
             v.paisCode===paisSelecionado;
 
-        const okEstado =
-
-    estadoSelecionado === "all"
-
-    ||
-
+       const okEstado =
+    !estadoSelecionado ||
     v.estado === estadoSelecionado;
-    return okBusca
+
+        let okSalario = true;
+
+if (faixaSelecionada) {
+
+    const [min, max] = faixaSelecionada
+        .split("-")
+        .map(Number);
+
+    const salario = Number(
+        v.salaryEstimated || v.salario || 0
+    );
+
+    okSalario =
+        salario >= min &&
+        salario <= max;
+
+}
+
+   rreturn (
+    okBusca
     && okPais
     && (
         !estadoSelecionado ||
         v.estado === estadoSelecionado
-    );
-        
+    )
+    && okSalario
+);
 
     });
 
