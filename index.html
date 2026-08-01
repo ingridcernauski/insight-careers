@@ -869,64 +869,6 @@
         throw new Error("Erro ao carregar br_jobs.json");
       }
 
-      const dados = await response.json();
-
-      return dados.map(vaga => ({
-
-        id: vaga.id,
-        titulo: vaga.titulo,
-        empresa: vaga.empresa,
-        cidade: vaga.cidade,
-        estado: vaga.estado,
-        pais: vaga.pais,
-        paisCode: vaga.paisCode,
-        flag: vaga.flag,
-        currency: vaga.currency,
-        salario: vaga.salario,
-        salaryType: vaga.salaryType,
-        salaryEstimated: vaga.salaryEstimated,
-        descricao: vaga.descricao,
-        link: vaga.link,
-        sourceName: vaga.sourceName,
-        modalidade: vaga.modalidade,
-        area: vaga.area
-
-      }));
-    }
-
-      const dados = await response.json();
-
-      return dados.map(vaga => {
-
-        const partes = (vaga.location || "").split(",");
-
-        const cidade = (partes[0]||"").trim();
-        const estado = (partes[1]||"").trim();
-
-        const salario = Math.round(((vaga.salary_min||0)+(vaga.salary_max||0))/2);
-
-        return {
-          id:vaga.id,
-          titulo:vaga.title,
-          empresa:vaga.company,
-          cidade,
-          estado,
-          pais:"Brasil",
-          paisCode:"br",
-          flag:"🇧🇷",
-          currency:"BRL",
-          salario,
-          salaryType:"real",
-          salaryEstimated:salario,
-          descricao:vaga.description,
-          link:vaga.url,
-          sourceName:"Portfolio",
-          modalidade:"Remoto",
-          area:"Dados / BI"
-        };
-      });
-    }
-
     function renderizarSkeleton(qtd = 6){
       const listaEl = document.getElementById("listaVagas");
       const resultsEl = document.querySelector(".results");
