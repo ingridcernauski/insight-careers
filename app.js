@@ -288,3 +288,10 @@ function preencherCidades(){
     });
 
 }
+document.addEventListener("DOMContentLoaded", async () => {
+
+    await carregarVagas();
+
+    console.log(vagas);
+
+});
