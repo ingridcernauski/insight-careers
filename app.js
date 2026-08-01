@@ -422,6 +422,13 @@ document.addEventListener("DOMContentLoaded",async()=>{
 
     buscaEl.addEventListener("input", aplicarFiltros);
 
+    paisEl.addEventListener(
+
+    "change",
+
+    aplicarFiltros
+
+);
 });
 /* ============================================================
    BUSCA
@@ -453,6 +460,55 @@ function aplicarFiltros(){
         .toLowerCase();
 
         return conteudo.includes(texto);
+
+    });
+
+    paginaAtual = 1;
+
+    renderizarVagas(resultado);
+
+}
+/* ============================================================
+   FILTRO POR PAÍS
+============================================================ */
+
+function aplicarFiltros(){
+
+    const texto = buscaEl.value
+        .trim()
+        .toLowerCase();
+
+    const paisSelecionado = paisEl.value;
+
+    let resultado = vagas.filter(v=>{
+
+        const conteudo = [
+
+            v.titulo,
+            v.empresa,
+            v.descricao,
+            v.area,
+            v.modalidade,
+            v.cidade,
+            v.estado
+
+        ]
+        .join(" ")
+        .toLowerCase();
+
+        const okBusca =
+            !texto ||
+            conteudo.includes(texto);
+
+        const okPais =
+
+            paisSelecionado==="all"
+
+            ||
+
+            v.paisCode===paisSelecionado;
+
+        return okBusca && okPais;
 
     });
 
