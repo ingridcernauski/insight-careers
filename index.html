@@ -871,6 +871,31 @@
 
       const dados = await response.json();
 
+      return dados.map(vaga => ({
+
+        id: vaga.id,
+        titulo: vaga.titulo,
+        empresa: vaga.empresa,
+        cidade: vaga.cidade,
+        estado: vaga.estado,
+        pais: vaga.pais,
+        paisCode: vaga.paisCode,
+        flag: vaga.flag,
+        currency: vaga.currency,
+        salario: vaga.salario,
+        salaryType: vaga.salaryType,
+        salaryEstimated: vaga.salaryEstimated,
+        descricao: vaga.descricao,
+        link: vaga.link,
+        sourceName: vaga.sourceName,
+        modalidade: vaga.modalidade,
+        area: vaga.area
+
+      }));
+    }
+
+      const dados = await response.json();
+
       return dados.map(vaga => {
 
         const partes = (vaga.location || "").split(",");
