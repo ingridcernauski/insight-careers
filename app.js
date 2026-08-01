@@ -420,4 +420,44 @@ document.addEventListener("DOMContentLoaded",async()=>{
 
     renderizarVagas(vagas);
 
+    buscaEl.addEventListener("input", aplicarFiltros);
+
 });
+/* ============================================================
+   BUSCA
+============================================================ */
+
+function aplicarFiltros(){
+
+    const texto = buscaEl.value
+        .trim()
+        .toLowerCase();
+
+    let resultado = vagas.filter(v=>{
+
+        if(!texto)
+            return true;
+
+        const conteudo = [
+
+            v.titulo,
+            v.empresa,
+            v.descricao,
+            v.area,
+            v.modalidade,
+            v.cidade,
+            v.estado
+
+        ]
+        .join(" ")
+        .toLowerCase();
+
+        return conteudo.includes(texto);
+
+    });
+
+    paginaAtual = 1;
+
+    renderizarVagas(resultado);
+
+}
