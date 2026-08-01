@@ -288,10 +288,136 @@ function preencherCidades(){
     });
 
 }
-document.addEventListener("DOMContentLoaded", async () => {
+/* ============================================================
+   RENDERIZAÇÃO
+============================================================ */
+
+function renderizarVagas(lista = vagas){
+
+    vagasFiltradas = lista;
+
+    atualizarContadores();
+
+    limparElemento(listaEl);
+
+    if(lista.length === 0){
+
+        vazioEl.style.display = "block";
+        paginacaoEl.innerHTML = "";
+
+        contadorResultados.textContent = "0 vagas";
+        subtituloResultados.textContent = "Nenhum resultado encontrado.";
+
+        return;
+    }
+
+    vazioEl.style.display = "none";
+
+    contadorResultados.textContent =
+        `${lista.length} vagas`;
+
+    subtituloResultados.textContent =
+        "Resultados encontrados";
+
+    const inicio = (paginaAtual - 1) * VAGAS_POR_PAGINA;
+
+    const fim = inicio + VAGAS_POR_PAGINA;
+
+    const pagina = lista.slice(inicio,fim);
+
+    pagina.forEach(vaga=>{
+
+        listaEl.appendChild(
+
+            criarCard(vaga)
+
+        );
+
+    });
+
+}
+function criarCard(vaga){
+
+    const card = document.createElement("article");
+
+    card.className = "card";
+
+    const favorita = favoritas.includes(vaga.id);
+
+    card.innerHTML = `
+
+        <div class="card-top">
+
+            <div>
+
+                <span class="badge">
+
+                    ${vaga.modalidade}
+
+                </span>
+
+            </div>
+
+            <button
+                class="btn-favorito"
+                data-id="${vaga.id}">
+
+                ${favorita ? "❤️" : "🤍"}
+
+            </button>
+
+        </div>
+
+        <h3>
+
+            ${vaga.titulo || "Sem título"}
+
+        </h3>
+
+        <p>
+
+            ${vaga.empresa || ""}
+
+        </p>
+
+        <p>
+
+            📍 ${vaga.cidade || ""}
+
+            ${vaga.estado ? " - " + vaga.estado : ""}
+
+        </p>
+
+        <p>
+
+            💰 ${moeda(
+
+                vaga.salaryEstimated ||
+                vaga.salario
+
+            )}
+
+        </p>
+
+        <p>
+
+            ${vaga.area || ""}
+
+        </p>
+
+    `;
+
+    return card;
+
+}
+/* ============================================================
+   INICIALIZAÇÃO
+============================================================ */
+
+document.addEventListener("DOMContentLoaded",async()=>{
 
     await carregarVagas();
 
-    console.log(vagas);
+    renderizarVagas(vagas);
 
 });
